@@ -41,3 +41,7 @@ class PacMan:
         valid_directions = ['UP', 'DOWN', 'LEFT', 'RIGHT']
         if new_direction in valid_directions:
             self.nextDirection = new_direction
+
+    def get_valid_directions(self):
+        valid_directions = ['UP', 'DOWN', 'LEFT', 'RIGHT']
+        return valid_directions
