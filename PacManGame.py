@@ -47,10 +47,10 @@ while running:
 
     player_pos = pygame.Vector2(player1.x * 31 + 15, player1.y * 31 + 15)
     if elapsed > 0.5:
-        elapsed = 0
+        elapsed -= 0.5
         player1.move()
-    else:
-        player_pos += pygame.Vector2(x * (elapsed / 0.5) * 31, y * (elapsed / 0.5) * 31)
+        player_pos = pygame.Vector2(player1.x * 31 + 15, player1.y * 31 + 15)
+    player_pos += pygame.Vector2(x * (elapsed / 0.5) * 31, y * (elapsed / 0.5) * 31)
 
 
 
