@@ -1,6 +1,6 @@
 # Example file showing a circle moving on screen
 import pygame
-from pacman import PacMan
+from PacMan import PacMan
 from points import Point, punkte
 
 # pygame setup
