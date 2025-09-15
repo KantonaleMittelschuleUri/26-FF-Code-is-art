@@ -1,4 +1,4 @@
-
+from Wall import Wall
 
 xDim = 23
 yDim = 23
@@ -13,9 +13,9 @@ class PacMan:
 
     # One Discrete Time Step
     def move(self):
-        if not self.direction in self.get_valid_directions():
-            self.TryTurning()
-            return
+        #if not self.direction in self.get_valid_directions():
+        self.TryTurning()
+        #    return
 
         if self.direction == 'UP':
             self.y -= 1
@@ -38,10 +38,21 @@ class PacMan:
 
 
     def change_direction(self, new_direction):
-        valid_directions = ['UP', 'DOWN', 'LEFT', 'RIGHT']
-        if new_direction in valid_directions:
-            self.nextDirection = new_direction
+        self.nextDirection = new_direction
+        #if new_direction in valid_directions:
+        #    self.nextDirection = new_direction
 
     def get_valid_directions(self):
-        valid_directions = ['UP', 'DOWN', 'LEFT', 'RIGHT']
+
+        valid_directions = []
+        
+        if not Wall.checkForWall(self.x,self.y+1):
+            valid_directions.append('UP')
+        if not Wall.checkForWall(self.x,self.y-1):
+            valid_directions.append('DOWN')
+        if not Wall.checkForWall(self.x-1,self.y):
+            valid_directions.append('LEFT')
+        if not Wall.checkForWall(self.x+1,self.y):
+            valid_directions.append('RIGHT')
+
         return valid_directions

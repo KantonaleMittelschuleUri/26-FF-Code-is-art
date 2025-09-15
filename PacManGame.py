@@ -1,6 +1,7 @@
 # Example file showing a circle moving on screen
 import pygame
 from PacMan import PacMan
+from Wall import Wall
 
 # pygame setup
 pygame.init()
@@ -9,7 +10,7 @@ clock = pygame.time.Clock()
 running = True
 dt = 0
 
-player1 = PacMan(5, 5)
+player1 = PacMan(0, 22)
 elapsed = 0
 
 
@@ -36,6 +37,8 @@ while running:
 
     x = 0
     y = 0
+
+    #Determine offset for player movement
     if player1.direction == "UP":
         y = -1.0
     if player1.direction == "DOWN":
@@ -45,9 +48,24 @@ while running:
     if player1.direction == "RIGHT":
         x = 1.0
 
+
+    #print("[DEBUG] p1_x: ", player1.x)
+    #print("[DEBUG] p1_y: ", player1.y)
+    #print("[DEBUG] p1_direction: ", player1.direction)
+    #print("[DEBUG] Valid Direction: ", player1.get_valid_directions())
+    #print("x", x)
+    #print("x", y)
+    if Wall.checkForWall(player1.x + int(x), player1.y + int(y)):
+        player1.direction = "STATIC"
+    
+    #Paint
     player_pos = pygame.Vector2(player1.x * 31 + 15, player1.y * 31 + 15)
     if elapsed > 0.5:
         elapsed -= 0.5
+
+        print("[DEBUG] p1_direction: ", player1.direction)
+        print("[DEBUG] Valid Direction: ", player1.get_valid_directions())
+
         player1.move()
         player_pos = pygame.Vector2(player1.x * 31 + 15, player1.y * 31 + 15)
     player_pos += pygame.Vector2(x * (elapsed / 0.5) * 31, y * (elapsed / 0.5) * 31)
@@ -55,7 +73,7 @@ while running:
 
 
     
-    print(elapsed)
+    #print(elapsed)
     pygame.draw.circle(screen, "red", player_pos, 14)
 
 
