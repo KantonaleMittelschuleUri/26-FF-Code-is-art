@@ -12,7 +12,7 @@ clock = pygame.time.Clock()
 running = True
 dt = 0
 
-player1 = PacMan(0, 22)
+player1 = PacMan(4, 18)
 ghost1 = Ghost(12,12,"UP","red")
 elapsed = 0
 
@@ -40,7 +40,7 @@ while running:
     for p in punkte.values():
         pygame.draw.circle(screen, "orange", (p.x * 31 + 15, p.y * 31 + 15), 2)
         
-    
+
     elapsed += dt
 
     x = 0
