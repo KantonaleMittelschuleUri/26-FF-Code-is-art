@@ -30,12 +30,3 @@ class Ghost:
     def get_valid_directions():
         return ['UP','DOWN','LEFT','RIGHT']
     
-    def draw(self):
-        body_width = int([cell_size / 2])
-        body_height = int([cell_size])
-        px = int(self.x)
-        py = int(self.y)
-        
-        pygame.draw.circle(surface, self.color, px, body_width/2, body_width, True, True, False, False)
-        pygame.draw.rect(surface, self.color)
-        
