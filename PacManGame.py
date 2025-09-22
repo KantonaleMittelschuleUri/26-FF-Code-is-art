@@ -13,7 +13,7 @@ running = True
 dt = 0
 
 player1 = PacMan(0, 22)
-ghost1 = Ghost(12,12,"UP","blue")
+ghost1 = Ghost(12,12,"UP","pink")
 elapsed = 0
 
 
@@ -34,10 +34,11 @@ while running:
                 player1.change_direction('RIGHT')
 
     # fill the screen with a color to wipe away anything from last frame
-    screen.fill("purple")
+    screen.fill("black")
+    Wall.paint(screen)
 
     for p in punkte.values():
-        pygame.draw.circle(screen, "yellow", (p.x * 31 + 15, p.y * 31 + 15), 2)
+        pygame.draw.circle(screen, "orange", (p.x * 31 + 15, p.y * 31 + 15), 2)
         
 
     elapsed += dt
@@ -102,9 +103,9 @@ while running:
 
     
     #print(elapsed)
-    pygame.draw.circle(screen, "red", player_pos, 14)
+    pygame.draw.circle(screen, "yellow", player_pos, 14)
     
-    pygame.draw.circle(screen, "blue", ghost1_pos, 14)
+    pygame.draw.circle(screen, "pink", ghost1_pos, 14)
 
 
 
