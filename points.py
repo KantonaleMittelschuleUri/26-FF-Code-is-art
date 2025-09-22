@@ -1,5 +1,6 @@
 
 from random import randint
+from Wall import Wall
 
 class Point:
     def __init__(self, x, y, typ):
@@ -18,15 +19,19 @@ width = 23
 height = 23
 
 # Erstelle eine Liste mit Punkten für jedes Feld im Raster
-punkte = {}
-for x in range(width):
-    for y in range(height):
-        punkte[(x,y)] = Point(x, y, "klein")
 
 punkte = {}
 for x in range(width):
     for y in range(height):
-        punkte[(x,y)] = Point(x, y, "gross")
+        if not Wall.checkForWall(x,y):
+            punkte[(x,y)] = Point(x, y, typ="self.typ")
+
+punkte = {}
+for x in range(width):
+    for y in range(height):
+        if not Wall.checkForWall(x,y):
+            punkte[(x,y)] = Point(x, y, typ="self.typ")
+    
 
 # Beispiel-Ausgabe
 print(punkte)
