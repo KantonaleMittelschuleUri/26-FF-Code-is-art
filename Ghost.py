@@ -6,7 +6,7 @@ yDim = 23
 cell_size = 31
 
 class Ghost:
-    def __init__(self,x,y,direction,color):
+    def __init__(self,x,y,color):
         self.x = x
         self.y = y
         self.color = color
@@ -23,10 +23,9 @@ class Ghost:
             self.x += 1
             
         self.direction = random.choice(['UP','DOWN','LEFT','RIGHT'])
-        print(self)
+        print(self.direction)
         self.x %= xDim
         self.y %= yDim
     
-    def get_valid_directions():
-        return ['UP','DOWN','LEFT','RIGHT']
+
     

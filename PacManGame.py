@@ -13,7 +13,7 @@ running = True
 dt = 0
 
 player1 = PacMan(0, 22)
-ghost1 = Ghost(12,12,"UP","red")
+ghost1 = Ghost(12,12,"red")
 elapsed = 0
 
 
@@ -81,9 +81,11 @@ while running:
     #print("x", y)
     if Wall.checkForWall(player1.x + int(x), player1.y + int(y)):
         player1.direction = "STATIC"
+        x, y = 0, 0
         
-    if Wall.checkForWall(ghost1.x + int(x), ghost1.y + int(y)):
+    if Wall.checkForWall(ghost1.x + int(xg), ghost1.y + int(yg)):
         ghost1.direction = "STATIC"
+        xg, yg = 0, 0
     
     #Paint
     ghost1_pos = pygame.Vector2(ghost1.x * 31 + 15, ghost1.y * 31 + 15)

@@ -14,7 +14,7 @@ class PacMan:
     # One Discrete Time Step
     def move(self):
         #if not self.direction in self.get_valid_directions():
-        self.TryTurning()
+        #self.TryTurning()
         #    return
 
         if self.direction == 'UP':
