@@ -1,10 +1,17 @@
 
+from random import randint
+
 class Point:
-    def __init__(self, x, y, typ="klein"):
+    def __init__(self, x, y, typ):
         self.x = x
         self.y = y
-        self.typ = typ  # "klein", "gross", "kirsche"
-
+        r = randint(1, 50)
+        if r in [48, 49]:
+            self.typ = "gross"
+        elif r == 50:
+            self.typ = "kirsche"
+        else:
+            self.typ = "klein"
 
 # Rastergröße
 width = 23
@@ -16,6 +23,13 @@ for x in range(width):
     for y in range(height):
         punkte[(x,y)] = Point(x, y, "klein")
 
+punkte = {}
+for x in range(width):
+    for y in range(height):
+        punkte[(x,y)] = Point(x, y, "gross")
+
 # Beispiel-Ausgabe
 print(punkte)
+
+
 
