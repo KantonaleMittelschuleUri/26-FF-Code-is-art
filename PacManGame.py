@@ -3,6 +3,7 @@ import pygame
 from PacMan import PacMan
 from points import Point, punkte
 from Wall import Wall
+from Ghost import Ghost
 
 # pygame setup
 pygame.init()
@@ -12,6 +13,7 @@ running = True
 dt = 0
 
 player1 = PacMan(0, 22)
+ghost1 = Ghost(12,12,"UP","blue")
 elapsed = 0
 
 
@@ -32,17 +34,18 @@ while running:
                 player1.change_direction('RIGHT')
 
     # fill the screen with a color to wipe away anything from last frame
-    screen.fill("black")
-    Wall.paint(screen)
+    screen.fill("purple")
 
     for p in punkte.values():
-        pygame.draw.circle(screen, "turquoise", (p.x * 31 + 15, p.y * 31 + 15), 2)
+        pygame.draw.circle(screen, "yellow", (p.x * 31 + 15, p.y * 31 + 15), 2)
         
 
     elapsed += dt
 
     x = 0
     y = 0
+    xg = 0
+    yg = 0
 
     #Determine offset for player movement
     if player1.direction == "UP":
@@ -53,6 +56,15 @@ while running:
         x = -1.0
     if player1.direction == "RIGHT":
         x = 1.0
+    #ghost pos
+    if ghost1.direction == "UP":
+        yg = -1.0
+    if ghost1.direction == "DOWN":
+        yg = 1.0
+    if ghost1.direction == "LEFT":
+        xg = -1.0
+    if ghost1.direction == "RIGHT":
+        xg = 1.0
 
 
     #print("[DEBUG] p1_x: ", player1.x)
@@ -63,27 +75,36 @@ while running:
     #print("x", y)
     if Wall.checkForWall(player1.x + int(x), player1.y + int(y)):
         player1.direction = "STATIC"
+        
+    if Wall.checkForWall(ghost1.x + int(x), ghost1.y + int(y)):
+        ghost1.direction = "STATIC"
     
     #Paint
+    ghost1_pos = pygame.Vector2(ghost1.x * 31 + 15, ghost1.y * 31 + 15)
     player_pos = pygame.Vector2(player1.x * 31 + 15, player1.y * 31 + 15)
     if elapsed > 0.5:
         elapsed -= 0.5
 
-        print("[DEBUG] p1_direction: ", player1.direction)
-        print("[DEBUG] Valid Direction: ", player1.get_valid_directions())
+        
 
         player1.move()
         if (player1.x, player1.y) in punkte:
             del punkte[(player1.x,player1.y)]
         player_pos = pygame.Vector2(player1.x * 31 + 15, player1.y * 31 + 15)
+        
+        ghost1.move()
+        ghost1_pos = pygame.Vector2(ghost1.x * 31 + 15, ghost1.y * 31 + 15)
 
     player_pos += pygame.Vector2(x * (elapsed / 0.5) * 31, y * (elapsed / 0.5) * 31)
+    ghost1_pos += pygame.Vector2(xg * (elapsed / 0.5) * 31, yg * (elapsed / 0.5) * 31)
 
 
 
     
     #print(elapsed)
-    pygame.draw.circle(screen, "yellow", player_pos, 14)
+    pygame.draw.circle(screen, "red", player_pos, 14)
+    
+    pygame.draw.circle(screen, "blue", ghost1_pos, 14)
 
 
 
