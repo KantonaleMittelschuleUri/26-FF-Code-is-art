@@ -46,9 +46,9 @@ class PacMan:
 
         valid_directions = []
         
-        if not Wall.checkForWall(self.x,self.y+1):
-            valid_directions.append('UP')
         if not Wall.checkForWall(self.x,self.y-1):
+            valid_directions.append('UP')
+        if not Wall.checkForWall(self.x,self.y+1):
             valid_directions.append('DOWN')
         if not Wall.checkForWall(self.x-1,self.y):
             valid_directions.append('LEFT')

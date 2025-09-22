@@ -1,4 +1,4 @@
-
+import pygame
 
 xDim = 23
 yDim = 23
@@ -35,3 +35,9 @@ class Wall:
         x = x % 23
         y = y % 23
         return wallmap[y][x] == 1
+
+    def paint(screen):
+        for index_i, i in enumerate(wallmap):
+            for index_j, j in enumerate(i):
+                if Wall.checkForWall(index_j,index_i):
+                    pygame.draw.rect(screen, "blue", (index_j * 31, index_i * 31, 31, 31))
