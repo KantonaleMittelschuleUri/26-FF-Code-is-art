@@ -12,7 +12,7 @@ clock = pygame.time.Clock()
 running = True
 dt = 0
 
-player1 = PacMan(4, 18)
+player1 = PacMan(0, 22)
 ghost1 = Ghost(12,12,"UP","red")
 elapsed = 0
 
@@ -33,12 +33,11 @@ while running:
             if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                 player1.change_direction('RIGHT')
 
-    # Paint Landscape
-    screen.fill("black")
-    Wall.paint(screen)
+    # fill the screen with a color to wipe away anything from last frame
+    screen.fill("purple")
 
     for p in punkte.values():
-        pygame.draw.circle(screen, "orange", (p.x * 31 + 15, p.y * 31 + 15), 2)
+        pygame.draw.circle(screen, "yellow", (p.x * 31 + 15, p.y * 31 + 15), 2)
         
 
     elapsed += dt
@@ -103,10 +102,11 @@ while running:
 
     
     #print(elapsed)
-    pygame.draw.circle(screen, "yellow", player_pos, 14)
+    pygame.draw.circle(screen, "red", player_pos, 14)
     
-    pygame.draw.circle(screen, "red", ghost1_pos, 14)
-
+    pygame.draw.circle(screen, "blue", ghost1_pos, 14)
+    rect_g = pygame.Rect(ghost1_pos.x-14, ghost1_pos.y, 28, 14)
+    pygame.draw.rect(screen, "blue", rect_g)
 
 
 
