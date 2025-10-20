@@ -4,6 +4,7 @@ from PacMan import PacMan
 from points import Point, punkte
 from Wall import Wall
 from Ghost import Ghost
+from Directions import Directions
 
 # pygame setup
 pygame.init()
@@ -12,8 +13,13 @@ clock = pygame.time.Clock()
 running = True
 dt = 0
 
-player1 = PacMan(0, 22)
-ghost1 = Ghost(12,12,"red")
+
+actors = []
+player1 = PacMan(6, 12)
+actors.append(player1)
+actors.append(Ghost(11,13,"red"))
+actors.append(Ghost(12,13,"pink"))
+actors.append(Ghost(10,13,"purple"))
 elapsed = 0
 
 
@@ -25,13 +31,13 @@ while running:
             running = False
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_w or event.key == pygame.K_UP:
-                player1.change_direction('UP')
+                player1.change_direction(Directions.UP)
             if event.key == pygame.K_s or event.key == pygame.K_DOWN:
-                player1.change_direction('DOWN')
+                player1.change_direction(Directions.DOWN)
             if event.key == pygame.K_a or event.key == pygame.K_LEFT:
-                player1.change_direction('LEFT')
+                player1.change_direction(Directions.LEFT)
             if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
-                player1.change_direction('RIGHT')
+                player1.change_direction(Directions.RIGHT)
 
     # Paint Landscape
     screen.fill("black")
@@ -39,83 +45,44 @@ while running:
 
     for p in punkte.values():
         if p.typ == "klein":
-            pygame.draw.circle(screen, "white", (p.x * 31 + 15, p.y * 31 + 15), 2)
+            pygame.draw.circle(screen, "white", (p.x * Wall.square_size + Wall.square_size/2, p.y * Wall.square_size + Wall.square_size/2), Wall.square_size/15)
         elif p.typ == "gross":
-            pygame.draw.circle(screen, "yellow", (p.x * 31 + 15, p.y * 31 + 15), 5)
+            pygame.draw.circle(screen, "yellow", (p.x * Wall.square_size + Wall.square_size/2, p.y * Wall.square_size + Wall.square_size/2), Wall.square_size/6)
         else: #kirsche
-            pygame.draw.circle(screen, "red", (p.x * 31 + 15, p.y * 31 + 15), 7)
+            pygame.draw.circle(screen, "red", (p.x * Wall.square_size + Wall.square_size/2, p.y * Wall.square_size + Wall.square_size/2), Wall.square_size/4)
         
     
     elapsed += dt
 
-    x = 0
-    y = 0
-    xg = 0
-    yg = 0
-
-    #Determine offset for player movement
-    if player1.direction == "UP":
-        y = -1.0
-    if player1.direction == "DOWN":
-        y = 1.0
-    if player1.direction == "LEFT":
-        x = -1.0
-    if player1.direction == "RIGHT":
-        x = 1.0
-    #ghost pos
-    if ghost1.direction == "UP":
-        yg = -1.0
-    if ghost1.direction == "DOWN":
-        yg = 1.0
-    if ghost1.direction == "LEFT":
-        xg = -1.0
-    if ghost1.direction == "RIGHT":
-        xg = 1.0
-
-
-    #print("[DEBUG] p1_x: ", player1.x)
-    #print("[DEBUG] p1_y: ", player1.y)
-    #print("[DEBUG] p1_direction: ", player1.direction)
-    #print("[DEBUG] Valid Direction: ", player1.get_valid_directions())
-    #print("x", x)
-    #print("x", y)
-    if Wall.checkForWall(player1.x + int(x), player1.y + int(y)):
-        player1.direction = "STATIC"
-        x, y = 0, 0
-        
-    if Wall.checkForWall(ghost1.x + int(xg), ghost1.y + int(yg)):
-        ghost1.direction = "STATIC"
-        xg, yg = 0, 0
+    for actor in actors:
+        direction = actor.direction.value
     
-    #Paint
-    ghost1_pos = pygame.Vector2(ghost1.x * 31 + 15, ghost1.y * 31 + 15)
-    player_pos = pygame.Vector2(player1.x * 31 + 15, player1.y * 31 + 15)
+        if Wall.checkForWall(actor.x + direction[0], actor.y + direction[1]):
+            actor.direction = Directions.STATIC
+            direction = (0, 0)
+            
+        pos = pygame.Vector2(actor.x * Wall.square_size + Wall.square_size/2, actor.y * Wall.square_size + Wall.square_size/2)
+    
+        if elapsed > 0.5:
+            
+            actor.move()
+            if isinstance(actor,PacMan) and (player1.x, player1.y) in punkte:
+                del punkte[(player1.x,player1.y)]
+
+            pos = pygame.Vector2(actor.x * Wall.square_size + Wall.square_size/2, actor.y * Wall.square_size + Wall.square_size/2)
+            direction = (0, 0)
+
+        pos += pygame.Vector2(direction[0] * (elapsed / 0.5) * Wall.square_size, direction[1] * (elapsed / 0.5) * Wall.square_size)
+
+        pygame.draw.circle(screen, actor.color, pos, Wall.square_size/2.1)
+        if isinstance(actor,Ghost):
+            rect_g = pygame.Rect(pos.x-Wall.square_size/2.1, pos.y, 2*Wall.square_size/2.1, Wall.square_size/2.1)
+            pygame.draw.rect(screen, actor.color, rect_g)
+
+
     if elapsed > 0.5:
-        elapsed -= 0.5
-
-        
-
-        player1.move()
-        if (player1.x, player1.y) in punkte:
-            del punkte[(player1.x,player1.y)]
-        player_pos = pygame.Vector2(player1.x * 31 + 15, player1.y * 31 + 15)
-        
-        ghost1.move()
-        ghost1_pos = pygame.Vector2(ghost1.x * 31 + 15, ghost1.y * 31 + 15)
-
-    player_pos += pygame.Vector2(x * (elapsed / 0.5) * 31, y * (elapsed / 0.5) * 31)
-    ghost1_pos += pygame.Vector2(xg * (elapsed / 0.5) * 31, yg * (elapsed / 0.5) * 31)
-
-
-
-    
-    #print(elapsed)
-    pygame.draw.circle(screen, "yellow", player_pos, 14)
-    
-    pygame.draw.circle(screen, "red", ghost1_pos, 14)
-
-
-
+            elapsed -= 0.5   
+ 
 
     # flip() the display to put your work on screen
     pygame.display.flip()

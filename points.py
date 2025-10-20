@@ -33,8 +33,6 @@ for x in range(width):
             punkte[(x,y)] = Point(x, y, typ="self.typ")
     
 
-# Beispiel-Ausgabe
-print(punkte)
 
 
 
