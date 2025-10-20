@@ -13,7 +13,7 @@ running = True
 dt = 0
 
 player1 = PacMan(0, 22)
-ghost1 = Ghost(12,12,"UP","red")
+ghost1 = Ghost(12,12,"red")
 elapsed = 0
 
 
@@ -33,13 +33,19 @@ while running:
             if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                 player1.change_direction('RIGHT')
 
-    # fill the screen with a color to wipe away anything from last frame
-    screen.fill("purple")
+    # Paint Landscape
+    screen.fill("black")
+    Wall.paint(screen)
 
     for p in punkte.values():
-        pygame.draw.circle(screen, "yellow", (p.x * 31 + 15, p.y * 31 + 15), 2)
+        if p.typ == "klein":
+            pygame.draw.circle(screen, "white", (p.x * 31 + 15, p.y * 31 + 15), 2)
+        elif p.typ == "gross":
+            pygame.draw.circle(screen, "yellow", (p.x * 31 + 15, p.y * 31 + 15), 5)
+        else: #kirsche
+            pygame.draw.circle(screen, "red", (p.x * 31 + 15, p.y * 31 + 15), 7)
         
-
+    
     elapsed += dt
 
     x = 0
@@ -75,9 +81,11 @@ while running:
     #print("x", y)
     if Wall.checkForWall(player1.x + int(x), player1.y + int(y)):
         player1.direction = "STATIC"
+        x, y = 0, 0
         
-    if Wall.checkForWall(ghost1.x + int(x), ghost1.y + int(y)):
+    if Wall.checkForWall(ghost1.x + int(xg), ghost1.y + int(yg)):
         ghost1.direction = "STATIC"
+        xg, yg = 0, 0
     
     #Paint
     ghost1_pos = pygame.Vector2(ghost1.x * 31 + 15, ghost1.y * 31 + 15)
@@ -102,11 +110,10 @@ while running:
 
     
     #print(elapsed)
-    pygame.draw.circle(screen, "red", player_pos, 14)
+    pygame.draw.circle(screen, "yellow", player_pos, 14)
     
-    pygame.draw.circle(screen, "blue", ghost1_pos, 14)
-    rect_g = pygame.Rect(ghost1_pos.x-14, ghost1_pos.y, 28, 14)
-    pygame.draw.rect(screen, "blue", rect_g)
+    pygame.draw.circle(screen, "red", ghost1_pos, 14)
+
 
 
 
