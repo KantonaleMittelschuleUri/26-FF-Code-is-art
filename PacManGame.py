@@ -17,9 +17,9 @@ dt = 0
 actors = []
 player1 = PacMan(6, 12)
 actors.append(player1)
-actors.append(Ghost(11,13,"red"))
-actors.append(Ghost(12,13,"pink"))
-actors.append(Ghost(10,13,"purple"))
+actors.append(Ghost(11,13,"red",0.25))
+actors.append(Ghost(12,13,"pink",0.1))
+actors.append(Ghost(10,13,"purple", 1.0))
 elapsed = 0
 
 
@@ -61,28 +61,30 @@ while running:
             actor.direction = Directions.STATIC
             direction = (0, 0)
             
-        pos = pygame.Vector2(actor.x * Wall.square_size + Wall.square_size/2, actor.y * Wall.square_size + Wall.square_size/2)
     
-        if elapsed > 0.5:
+       
             
-            actor.move()
-            if isinstance(actor,PacMan) and (player1.x, player1.y) in punkte:
-                del punkte[(player1.x,player1.y)]
+        actor.move(elapsed)
+        if isinstance(actor,PacMan) and (player1.x, player1.y) in punkte:
+            del punkte[(player1.x,player1.y)]
 
-            pos = pygame.Vector2(actor.x * Wall.square_size + Wall.square_size/2, actor.y * Wall.square_size + Wall.square_size/2)
-            direction = (0, 0)
+            
 
-        pos += pygame.Vector2(direction[0] * (elapsed / 0.5) * Wall.square_size, direction[1] * (elapsed / 0.5) * Wall.square_size)
+        pos = pygame.Vector2(actor.x * Wall.square_size + Wall.square_size/2, actor.y * Wall.square_size + Wall.square_size/2)
+        
 
+        partstep = (elapsed - actor.lastelapsed)/ actor.move_interval
+        
+
+        pos += pygame.Vector2(direction[0] * (partstep) * Wall.square_size, direction[1] * (partstep) * Wall.square_size)
+        if isinstance(actor,PacMan):
+            print(actor.x, actor.y, direction, elapsed, partstep, pos)
+        
+        
         pygame.draw.circle(screen, actor.color, pos, Wall.square_size/2.1)
         if isinstance(actor,Ghost):
             rect_g = pygame.Rect(pos.x-Wall.square_size/2.1, pos.y, 2*Wall.square_size/2.1, Wall.square_size/2.1)
             pygame.draw.rect(screen, actor.color, rect_g)
-
-
-    if elapsed > 0.5:
-            elapsed -= 0.5   
- 
 
     # flip() the display to put your work on screen
     pygame.display.flip()
