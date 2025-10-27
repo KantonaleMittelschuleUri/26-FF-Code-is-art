@@ -6,29 +6,35 @@ class Actor:
 
 
 
-    def __init__(self, x, y, color):
+    def __init__(self, x, y, color, move_interval=0.5):
         self.x = x
         self.y = y
         self.direction = Directions.STATIC
         self.color = color
+        
+        self.move_interval = move_interval
+        self.lastelapsed = 0
+
 
     # One Discrete Time Step
-    def move(self):
-        #if not self.direction in self.get_valid_directions():
-        #self.TryTurning()
-        #    return
+    def move(self, elapsed):
+        if self.lastelapsed + self.move_interval <= elapsed:
 
-        moveValue = self.direction.value
-        self.x += moveValue[0]
-        self.y += moveValue[1]  
+            #if not self.direction in self.get_valid_directions():
+            #self.TryTurning()
+            #    return
 
-        # Ensure PacMan stays within bounds
-        self.x %= Wall.xDim # Wrap around horizontally
-        self.y %= Wall.yDim # Wrap around vertically
+            moveValue = self.direction.value
+            self.x += moveValue[0]
+            self.y += moveValue[1]  
 
-        self.TryTurning()
+            # Ensure PacMan stays within bounds
+            self.x %= Wall.xDim # Wrap around horizontally
+            self.y %= Wall.yDim # Wrap around vertically
 
+            self.TryTurning()
 
+            self.lastelapsed += self.move_interval
 
     def get_valid_directions(self):
 
