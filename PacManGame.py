@@ -5,6 +5,8 @@ from points import Point, punkte
 from Wall import Wall
 from Ghost import Ghost
 from Directions import Directions
+from mode import Mode, mode, check_collision, fire_inverted
+from concurrent.futures import ThreadPoolExecutor
 
 # pygame setup
 pygame.init()
@@ -17,11 +19,12 @@ dt = 0
 actors = []
 player1 = PacMan(6, 12)
 actors.append(player1)
-actors.append(Ghost(11,13,"red",0.25))
-actors.append(Ghost(12,13,"pink",0.1))
-actors.append(Ghost(10,13,"purple", 1.0))
+actors.append(Ghost(11,13,"red",.5))
+actors.append(Ghost(12,13,"pink",.5))
+actors.append(Ghost(10,13,"purple",.5))
 elapsed = 0
 
+executor = ThreadPoolExecutor(max_workers=2)
 
 while running:
     # poll for events
@@ -54,32 +57,26 @@ while running:
     
     elapsed += dt
 
+    check_collision(actors)
+
     for actor in actors:
+        actor.move(elapsed)
         direction = actor.direction.value
     
         if Wall.checkForWall(actor.x + direction[0], actor.y + direction[1]):
             actor.direction = Directions.STATIC
             direction = (0, 0)
             
-    
-       
-            
-        actor.move(elapsed)
         if isinstance(actor,PacMan) and (player1.x, player1.y) in punkte:
+            if punkte[(player1.x,player1.y)].typ == "gross":
+                executor.submit(fire_inverted)
             del punkte[(player1.x,player1.y)]
 
-            
-
         pos = pygame.Vector2(actor.x * Wall.square_size + Wall.square_size/2, actor.y * Wall.square_size + Wall.square_size/2)
-        
 
         partstep = (elapsed - actor.lastelapsed)/ actor.move_interval
         
-
         pos += pygame.Vector2(direction[0] * (partstep) * Wall.square_size, direction[1] * (partstep) * Wall.square_size)
-        if isinstance(actor,PacMan):
-            print(actor.x, actor.y, direction, elapsed, partstep, pos)
-        
         
         pygame.draw.circle(screen, actor.color, pos, Wall.square_size/2.1)
         if isinstance(actor,Ghost):

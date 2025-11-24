@@ -3,8 +3,8 @@ from Actor import Actor
 
 
 class PacMan(Actor):
-    def __init__(self, x, y):
-        super().__init__(x, y, color="yellow")
+    def __init__(self, x, y, interval=0.5):
+        super().__init__(x, y, "yellow",interval)
 
         self.direction = Directions.UP  # Initial direction
         self.nextDirection = Directions.UP
