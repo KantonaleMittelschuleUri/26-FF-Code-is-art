@@ -9,7 +9,7 @@ class PacMan(Actor):
         self.direction = Directions.UP  # Initial direction
         self.nextDirection = Directions.UP
 
-    def TryTurning(self):
+    def TryTurning(self, target, wallmap):
         if self.nextDirection in self.get_valid_directions():
             self.direction = self.nextDirection
 

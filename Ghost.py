@@ -8,7 +8,7 @@ class Ghost(Actor):
         super().__init__(x, y, color, move_interval)
         self.direction = random.choice(self.get_valid_directions())
         
-    def TryTurning(self):
+    def TryTurning(self, target, wallmap):
         self.direction = random.choice(self.get_valid_directions())
 
 

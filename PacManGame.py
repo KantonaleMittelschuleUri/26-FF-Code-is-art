@@ -3,7 +3,9 @@ import pygame
 from PacMan import PacMan
 from points import Point, punkte
 from Wall import Wall
+from Wall import wallmap
 from Ghost import Ghost
+from DirectedGhost import DirectedGhost
 from Directions import Directions
 from mode import Mode, mode, check_collision, fire_inverted
 from concurrent.futures import ThreadPoolExecutor
@@ -21,7 +23,7 @@ player1 = PacMan(6, 12)
 actors.append(player1)
 actors.append(Ghost(11,13,"red",.5))
 actors.append(Ghost(12,13,"pink",.5))
-actors.append(Ghost(10,13,"purple",.5))
+actors.append(DirectedGhost(10,13,"purple",.5))
 elapsed = 0
 
 executor = ThreadPoolExecutor(max_workers=2)
@@ -60,7 +62,7 @@ while running:
     check_collision(actors)
 
     for actor in actors:
-        actor.move(elapsed)
+        actor.move(elapsed, (player1.x, player1.y), wallmap)
         direction = actor.direction.value
     
         if Wall.checkForWall(actor.x + direction[0], actor.y + direction[1]):

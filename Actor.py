@@ -17,7 +17,7 @@ class Actor:
 
 
     # One Discrete Time Step
-    def move(self, elapsed):
+    def move(self, elapsed, target, wallmap):
         if self.lastelapsed + self.move_interval <= elapsed:
 
             #if not self.direction in self.get_valid_directions():
@@ -32,8 +32,7 @@ class Actor:
             self.x %= Wall.xDim # Wrap around horizontally
             self.y %= Wall.yDim # Wrap around vertically
 
-            self.TryTurning()
-
+            self.TryTurning(target, wallmap)
             self.lastelapsed += self.move_interval
 
     def get_valid_directions(self):
@@ -51,6 +50,6 @@ class Actor:
 
         return valid_directions
     
-    def TryTurning(self):
+    def TryTurning(self, target, wallmap):
         pass
     
