@@ -4,6 +4,7 @@ from PacMan import PacMan
 from points import Point, punkte
 from Wall import Wall
 from Wall import wallmap
+from Actor import Actor 
 from Ghost import Ghost
 from DirectedGhost import DirectedGhost
 from Directions import Directions
@@ -71,7 +72,8 @@ while running:
             
         if isinstance(actor,PacMan) and (player1.x, player1.y) in punkte:
             if punkte[(player1.x,player1.y)].typ == "gross":
-                executor.submit(fire_inverted)
+                print("Inverted Mode Triggered")
+                executor.submit(fire_inverted, actors)
             del punkte[(player1.x,player1.y)]
 
         pos = pygame.Vector2(actor.x * Wall.square_size + Wall.square_size/2, actor.y * Wall.square_size + Wall.square_size/2)
@@ -80,10 +82,18 @@ while running:
         
         pos += pygame.Vector2(direction[0] * (partstep) * Wall.square_size, direction[1] * (partstep) * Wall.square_size)
         
-        pygame.draw.circle(screen, actor.color, pos, Wall.square_size/2.1)
         if isinstance(actor,Ghost):
             rect_g = pygame.Rect(pos.x-Wall.square_size/2.1, pos.y, 2*Wall.square_size/2.1, Wall.square_size/2.1)
-            pygame.draw.rect(screen, actor.color, rect_g)
+            if actor.is_vulnerable:
+                pygame.draw.circle(screen, "blue", pos, Wall.square_size/2.1)
+                pygame.draw.rect(screen, "blue", rect_g)
+            else:
+                pygame.draw.circle(screen, actor.color, pos, Wall.square_size/2.1)
+                pygame.draw.rect(screen, actor.color, rect_g)
+        else:
+            pygame.draw.circle(screen, actor.color, pos, Wall.square_size/2.1)
+
+        
 
     # flip() the display to put your work on screen
     pygame.display.flip()

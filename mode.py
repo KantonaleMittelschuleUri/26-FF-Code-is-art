@@ -12,12 +12,18 @@ class Mode(Enum):
     
 mode = Mode.NORMAL
 
-def fire_inverted():
+def fire_inverted(actors):
     global mode
     print("Inverted Mode Activated")
+    for actor in actors:
+        if not isinstance(actor,PacMan):
+            actor.is_vulnerable = True
     mode = Mode.INVERTED
     time.sleep(5)
     mode = Mode.NORMAL
+    for actor in actors:
+        if not isinstance(actor,PacMan):
+            actor.is_vulnerable = False
     print("Normal Mode Activated")
 
 def check_collision(actors):

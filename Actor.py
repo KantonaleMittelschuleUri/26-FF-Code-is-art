@@ -14,6 +14,7 @@ class Actor:
         
         self.move_interval = move_interval
         self.lastelapsed = 0
+        self.is_vulnerable = False
 
 
     # One Discrete Time Step

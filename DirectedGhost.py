@@ -11,7 +11,6 @@ class DirectedGhost(Ghost):
 
     def TryTurning(self, target, wallmap):
         new_direction = self.find_direction_to_pacman(target, wallmap)
-        print(new_direction)
         self.direction = new_direction
 
 
@@ -28,7 +27,6 @@ class DirectedGhost(Ghost):
         while len(q) > 0:
             x, y = q.popleft()
             if (x, y) == (px, py):
-                print("found pacman")
                 break
             for dx, dy in directions:
                 nx, ny = x + dx, y + dy
@@ -37,21 +35,13 @@ class DirectedGhost(Ghost):
                     parent[(nx, ny)] = (x, y)
                     q.append((nx, ny))
 
-
-        print(f"Reconstructing Path, parent map:{len(parent)}")
-        if (px, py) not in parent:
-            print("random")
-            return choice([Directions.UP, Directions.DOWN, Directions.LEFT, Directions.RIGHT])
         cur = (px, py)
         i = 0
         while parent[cur] != (gx, gy):
             i += 1
             cur = parent[cur]
 
-        print(f"Steps to PacMan: {i+1}")
-
         cx, cy = cur
-        print(f"Next Step: {cx},{cy} from {gx},{gy}, wallmap value: {wallmap[cx][cy]} ")
         if cx == gx - 1 and cy == gy:
             return Directions.LEFT
         elif cx == gx + 1 and cy == gy:
