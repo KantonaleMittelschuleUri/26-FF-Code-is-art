@@ -32,7 +32,7 @@ class DirectedGhost(Ghost):
                 break
             for dx, dy in directions:
                 nx, ny = x + dx, y + dy
-                if 0 <= nx < rows and 0 <= ny < cols and wallmap[nx][ny] == 0 and (nx, ny) not in visited:
+                if 0 <= nx < rows and 0 <= ny < cols and wallmap[ny][nx] == 0 and (nx, ny) not in visited:
                     visited[(nx,ny)] = True
                     parent[(nx, ny)] = (x, y)
                     q.append((nx, ny))
