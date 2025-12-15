@@ -1,13 +1,15 @@
 from Directions import Directions
 from GhostState import GhostState
 from Wall import Wall
+import math
+import pygame
 
 
 class Actor:
 
 
 
-    def __init__(self, x, y, color, move_interval=0.5):
+    def __init__(self, x, y, color, counter, move_interval=0.5):
         self.x = x
         self.y = y
         self.direction = Directions.STATIC
@@ -59,4 +61,19 @@ class Actor:
     
     def TryTurning(self, target, wallmap):
         pass
+    
+def draw_slice(surface, color, center, radius, start_deg, end_deg, steps):
+    cx, cy = center
+    start_rad = math.radians(start_deg)
+    end_rad   = math.radians(end_deg)
+
+    points = [center]
+    for i in range(steps + 1):
+        t = start_rad + (end_rad - start_rad) * i / steps
+        x = cx + radius * math.cos(t)
+        y = cy + radius * math.sin(t)
+        points.append((x, y))
+        
+
+    pygame.draw.polygon(surface, color, points)
     
