@@ -18,4 +18,15 @@ class PacMan(Actor):
         self.nextDirection = new_direction
         #if new_direction in valid_directions:
         #    self.nextDirection = new_direction
+    
+    def animate(self):
+        match self.direction:
+            case Directions.UP:
+                print("frame_step_animate_up")
+            case Directions.DOWN:
+                print("frame_step_animate_down")
+            case Directions.LEFT:
+                print("frame_step_animate_left")
+            case Directions.RIGHT:
+                print("frame_step_animate_right")
 
