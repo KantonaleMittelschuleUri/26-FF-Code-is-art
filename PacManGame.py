@@ -99,6 +99,7 @@ while running:
                 pygame.draw.rect(screen, actor.color, rect_g)
 
                 dist = 2*Wall.square_size/2.2
+                
 
                 if frames % 10 < 5:
 
