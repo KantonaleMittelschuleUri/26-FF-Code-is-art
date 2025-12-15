@@ -3,40 +3,36 @@ import time
 from PacMan import *
 from Ghost import *
 from Actor import *
+from GhostState import GhostState
 
 
 
-class Mode(Enum):
-    NORMAL = 0
-    INVERTED = 1
-    
-mode = Mode.NORMAL
+fire_inverted_count = 0
 
 def fire_inverted(actors):
-    global mode
-    print("Inverted Mode Activated")
+    global fire_inverted_count
+    fire_inverted_count += 1
     for actor in actors:
         if not isinstance(actor,PacMan):
-            actor.is_vulnerable = True
-    mode = Mode.INVERTED
-    time.sleep(5)
-    mode = Mode.NORMAL
-    for actor in actors:
-        if not isinstance(actor,PacMan):
-            actor.is_vulnerable = False
-    print("Normal Mode Activated")
+            actor.ghost_state = GhostState.VULNERABLE
+    time.sleep(10)
+    fire_inverted_count -= 1
+    if fire_inverted_count == 0:
+        for actor in actors:
+            if not isinstance(actor,PacMan) and actor.ghost_state == GhostState.VULNERABLE:
+                actor.ghost_state = GhostState.CHASE
 
 def check_collision(actors):
-    global mode
     pacman = None
     for actor in actors:
         if isinstance(actor,PacMan):
             pacman = actor
         elif isinstance(actor,Ghost):
-            if (actor.x, actor.x) == (pacman.x, pacman.y):
-                if mode == Mode.NORMAL:
+            if ((actor.x, actor.y) == (pacman.x, pacman.y) or 
+               (pacman.x + pacman.direction.value[0], pacman.y + pacman.direction.value[1]) == (actor.x, actor.y)):
+                if actor.ghost_state == GhostState.CHASE:
                     print("Game Over")
                 else:
-                    print("kill ghsot")
+                    actor.ghost_state = GhostState.EATEN
 
 

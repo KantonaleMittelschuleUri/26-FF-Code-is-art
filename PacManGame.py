@@ -6,9 +6,10 @@ from Wall import Wall
 from Wall import wallmap
 from Actor import Actor 
 from Ghost import Ghost
+from GhostState import GhostState
 from DirectedGhost import DirectedGhost
 from Directions import Directions
-from mode import Mode, mode, check_collision, fire_inverted
+from mode import check_collision, fire_inverted
 from concurrent.futures import ThreadPoolExecutor
 
 # pygame setup
@@ -84,12 +85,15 @@ while running:
         
         if isinstance(actor,Ghost):
             rect_g = pygame.Rect(pos.x-Wall.square_size/2.1, pos.y, 2*Wall.square_size/2.1, Wall.square_size/2.1)
-            if actor.is_vulnerable:
+            if actor.ghost_state == GhostState.VULNERABLE:
                 pygame.draw.circle(screen, "blue", pos, Wall.square_size/2.1)
                 pygame.draw.rect(screen, "blue", rect_g)
-            else:
+            elif actor.ghost_state == GhostState.CHASE:
                 pygame.draw.circle(screen, actor.color, pos, Wall.square_size/2.1)
                 pygame.draw.rect(screen, actor.color, rect_g)
+            else:
+                pygame.draw.circle(screen, "pink", pos, Wall.square_size/2.1)
+                pygame.draw.rect(screen, "pink", rect_g)
         else:
             pygame.draw.circle(screen, actor.color, pos, Wall.square_size/2.1)
 

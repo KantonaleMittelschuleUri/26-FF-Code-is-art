@@ -1,4 +1,5 @@
 from Directions import Directions
+from GhostState import GhostState
 from Wall import Wall
 
 
@@ -13,8 +14,9 @@ class Actor:
         self.color = color
         
         self.move_interval = move_interval
+        self.base_move_interval = move_interval
         self.lastelapsed = 0
-        self.is_vulnerable = False
+        self.ghost_state = GhostState.CHASE
 
 
     # One Discrete Time Step
@@ -24,6 +26,10 @@ class Actor:
             #if not self.direction in self.get_valid_directions():
             #self.TryTurning()
             #    return
+            if self.ghost_state == GhostState.VULNERABLE:
+                self.move_interval = self.base_move_interval * 1.5
+            else:
+                self.move_interval = self.base_move_interval
 
             moveValue = self.direction.value
             self.x += moveValue[0]
