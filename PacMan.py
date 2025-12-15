@@ -10,7 +10,7 @@ class PacMan(Actor):
 
         self.direction = Directions.UP  # Initial direction
         self.nextDirection = Directions.UP
-        self.counter = counter % 30
+        self.counter = counter
 
     def TryTurning(self, target, wallmap):
         if self.nextDirection in self.get_valid_directions():

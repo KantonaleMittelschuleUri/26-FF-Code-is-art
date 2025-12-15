@@ -100,17 +100,20 @@ while running:
                 pygame.draw.rect(screen, "pink", rect_g)
         else: #Draw Pacman
             pygame.draw.circle(screen, actor.color, pos, Wall.square_size/2.1)
+            actor.counter = actor.counter % 30
             if actor.direction == Directions.UP:
                 if actor.counter <= 15:
                     draw_slice(screen, (0,0,0), pos, Wall.square_size/2.1, 234, 306, 5)
-                draw_slice(screen, actor.color, pos, Wall.square_size/2.1, 234, 306, 5)
-                actor.counter = 1
             elif actor.direction == Directions.DOWN:
-                draw_slice(screen, (0,0,0), pos, Wall.square_size/2.1, 54, 126, 5)
+                if actor.counter <= 15:
+                    draw_slice(screen, (0,0,0), pos, Wall.square_size/2.1, 54, 126, 5)
             elif actor.direction == Directions.RIGHT:
-                draw_slice(screen, (0,0,0), pos, Wall.square_size/2.1, -36, 36, 5)
+                if actor.counter <= 15:
+                    draw_slice(screen, (0,0,0), pos, Wall.square_size/2.1, -36, 36, 5)
             elif actor.direction == Directions.LEFT:
-                draw_slice(screen, (0,0,0), pos, Wall.square_size/2.1, 144, 216, 5)
+                if actor.counter <= 15:
+                    draw_slice(screen, (0,0,0), pos, Wall.square_size/2.1, 144, 216, 5)
+            actor.counter += 2
             
 
         
