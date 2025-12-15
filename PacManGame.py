@@ -27,6 +27,7 @@ actors.append(Ghost(11,13,"red",.5))
 actors.append(Ghost(12,13,"pink",.5))
 actors.append(DirectedGhost(10,13,"purple",.5))
 elapsed = 0
+frames = 0
 
 executor = ThreadPoolExecutor(max_workers=2)
 
@@ -49,6 +50,7 @@ while running:
     # Paint Landscape
     screen.fill("black")
     Wall.paint(screen)
+    frames += 1
 
     for p in punkte.values():
         if p.typ == "klein":
@@ -91,6 +93,27 @@ while running:
             elif actor.ghost_state == GhostState.CHASE:
                 pygame.draw.circle(screen, actor.color, pos, Wall.square_size/2.1)
                 pygame.draw.rect(screen, actor.color, rect_g)
+
+                dist = 2*Wall.square_size/2.2
+
+                if frames % 10 < 5:
+
+                    pygame.draw.polygon(screen, "black", [(pos.x - dist/2, pos.y + dist/2),
+                                                        (pos.x - dist/4, pos.y + dist/2),
+                                                        (pos.x - 3*dist/8, pos.y + dist/4)])                
+                    pygame.draw.polygon(screen, "black", [(pos.x + dist/2, pos.y + dist/2),
+                                                        (pos.x + dist/4, pos.y + dist/2),
+                                                        (pos.x + 3*dist/8, pos.y + dist/4)])
+                    pygame.draw.rect(screen, "black", pygame.Rect(pos.x - dist/8, pos.y + dist/4, dist/4, dist/4))
+                else:
+
+                    pygame.draw.polygon(screen, "black", [(pos.x - dist/8, pos.y + dist/2),
+                                                        (pos.x - 3*dist/8, pos.y + dist/2),
+                                                        (pos.x - dist/4, pos.y + dist/4)])                
+                    pygame.draw.polygon(screen, "black", [(pos.x + dist/8, pos.y + dist/2),
+                                                        (pos.x + 3*dist/8, pos.y + dist/2),
+                                                        (pos.x + dist/4, pos.y + dist/4)])
+
             else:
                 pygame.draw.circle(screen, "pink", pos, Wall.square_size/2.1)
                 pygame.draw.rect(screen, "pink", rect_g)
