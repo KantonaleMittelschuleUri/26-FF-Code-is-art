@@ -9,7 +9,7 @@ class Actor:
 
 
 
-    def __init__(self, x, y, color, move_interval=0.5):
+    def __init__(self, x, y, color, counter, move_interval=0.5):
         self.x = x
         self.y = y
         self.direction = Directions.STATIC

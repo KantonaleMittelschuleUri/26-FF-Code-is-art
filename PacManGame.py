@@ -11,6 +11,7 @@ from DirectedGhost import DirectedGhost
 from Directions import Directions
 from mode import check_collision, fire_inverted
 from concurrent.futures import ThreadPoolExecutor
+import time
 
 # pygame setup
 pygame.init()
@@ -21,7 +22,7 @@ dt = 0
 
 
 actors = []
-player1 = PacMan(6, 12)
+player1 = PacMan(6, 12, 0)
 actors.append(player1)
 actors.append(Ghost(11,13,"red",.5))
 actors.append(Ghost(12,13,"pink",.5))
@@ -97,7 +98,10 @@ while running:
         else:
             pygame.draw.circle(screen, actor.color, pos, Wall.square_size/2.1)
             if actor.direction == Directions.UP:
-                draw_slice(screen, (0,0,0), pos, Wall.square_size/2.1, 234, 306, 5)
+                if actor.counter <= 15:
+                    draw_slice(screen, (0,0,0), pos, Wall.square_size/2.1, 234, 306, 5)
+                draw_slice(screen, actor.color, pos, Wall.square_size/2.1, 234, 306, 5)
+                actor.counter = 1
             elif actor.direction == Directions.DOWN:
                 draw_slice(screen, (0,0,0), pos, Wall.square_size/2.1, 54, 126, 5)
             elif actor.direction == Directions.RIGHT:

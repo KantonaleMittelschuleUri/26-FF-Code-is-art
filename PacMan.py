@@ -5,11 +5,12 @@ import math
 
 
 class PacMan(Actor):
-    def __init__(self, x, y, interval=0.5):
+    def __init__(self, x, y, counter, interval=0.5):
         super().__init__(x, y, "yellow",interval)
 
         self.direction = Directions.UP  # Initial direction
         self.nextDirection = Directions.UP
+        self.counter = counter % 30
 
     def TryTurning(self, target, wallmap):
         if self.nextDirection in self.get_valid_directions():
