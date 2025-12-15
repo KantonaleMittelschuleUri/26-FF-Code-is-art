@@ -72,11 +72,14 @@ while running:
             actor.direction = Directions.STATIC
             direction = (0, 0)
             
-        if isinstance(actor,PacMan) and (player1.x, player1.y) in punkte:
-            if punkte[(player1.x,player1.y)].typ == "gross":
-                print("Inverted Mode Triggered")
-                executor.submit(fire_inverted, actors)
-            del punkte[(player1.x,player1.y)]
+        if isinstance(actor,PacMan):
+            if (player1.x, player1.y) in punkte: # Check for Punkte
+                if punkte[(player1.x,player1.y)].typ == "gross":
+                    print("Inverted Mode Triggered")
+                    executor.submit(fire_inverted, actors)
+                del punkte[(player1.x,player1.y)]
+            if  player1.direction != Directions.STATIC: #Pacman step frame if not static
+                    player1.animate()
 
         pos = pygame.Vector2(actor.x * Wall.square_size + Wall.square_size/2, actor.y * Wall.square_size + Wall.square_size/2)
 
@@ -84,7 +87,7 @@ while running:
         
         pos += pygame.Vector2(direction[0] * (partstep) * Wall.square_size, direction[1] * (partstep) * Wall.square_size)
         
-        if isinstance(actor,Ghost):
+        if isinstance(actor,Ghost): #Draw Ghost
             rect_g = pygame.Rect(pos.x-Wall.square_size/2.1, pos.y, 2*Wall.square_size/2.1, Wall.square_size/2.1)
             if actor.ghost_state == GhostState.VULNERABLE:
                 pygame.draw.circle(screen, "blue", pos, Wall.square_size/2.1)
@@ -95,7 +98,7 @@ while running:
             else:
                 pygame.draw.circle(screen, "pink", pos, Wall.square_size/2.1)
                 pygame.draw.rect(screen, "pink", rect_g)
-        else:
+        else: #Draw Pacman
             pygame.draw.circle(screen, actor.color, pos, Wall.square_size/2.1)
             if actor.direction == Directions.UP:
                 if actor.counter <= 15:
