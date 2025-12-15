@@ -1,5 +1,7 @@
 from Directions import Directions
 from Actor import Actor
+import pygame
+import math
 
 
 class PacMan(Actor):

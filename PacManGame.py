@@ -1,10 +1,10 @@
 # Example file showing a circle moving on screen
 import pygame
-from PacMan import PacMan
+from PacMan import *
 from points import Point, punkte
 from Wall import Wall
 from Wall import wallmap
-from Actor import Actor 
+from Actor import *
 from Ghost import Ghost
 from GhostState import GhostState
 from DirectedGhost import DirectedGhost
@@ -96,6 +96,15 @@ while running:
                 pygame.draw.rect(screen, "pink", rect_g)
         else:
             pygame.draw.circle(screen, actor.color, pos, Wall.square_size/2.1)
+            if actor.direction == Directions.UP:
+                draw_slice(screen, (0,0,0), pos, Wall.square_size/2.1, 234, 306, 5)
+            elif actor.direction == Directions.DOWN:
+                draw_slice(screen, (0,0,0), pos, Wall.square_size/2.1, 54, 126, 5)
+            elif actor.direction == Directions.RIGHT:
+                draw_slice(screen, (0,0,0), pos, Wall.square_size/2.1, -36, 36, 5)
+            elif actor.direction == Directions.LEFT:
+                draw_slice(screen, (0,0,0), pos, Wall.square_size/2.1, 144, 216, 5)
+            
 
         
 
